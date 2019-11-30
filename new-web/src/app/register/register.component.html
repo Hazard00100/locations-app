@@ -1,0 +1,50 @@
+
+<div class="modal-header">
+  <p class="modal-title">Creat new account</p>
+</div>
+<div class="modal-body">
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{errorMessage}}
+  </div>
+  <form>
+      <div class="form-group">
+          <label for="firstName">First Name:</label>
+          <input required type="text" [(ngModel)]="user.firstName" class="form-control" id="firstName" name="firstName" placeholder="First Name" />
+        </div>
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input required type="text" [(ngModel)]="user.lastName" class="form-control" id="lastName" name="lastName" placeholder="Last Name" />
+    </div>
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input required type="text" [(ngModel)]="user.username" class="form-control" id="username" name="username" placeholder="Username" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input required type="password" [(ngModel)]="user.password" class="form-control" id="password" name="password"
+        placeholder="Password" />
+    </div>
+    <div class="form-group">
+      <label for="cpassword">Confirme Password:</label>
+      <input required type="password" [(ngModel)]="user.cpassword" class="form-control" id="cpassword" name="cpassword"
+        placeholder="Confirm Password" />
+    </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth:</label>
+      <input type="date" class="form-control"
+         placeholder="Date of Birth"/>
+    </div>
+    <div class="custom-file">
+      <label class="custom-file-label" for="customFileLang">Driver's License</label>
+      <input type="file" accept=".png, .jpg, .jpeg" (change)="onUploadChange($event)" class="custom-file-input" id="customFileLang" lang="pl-Pl">
+      <img width="300" height="150" src={{user.driverLincense}} alt="" id="img">
+    </div>
+
+  </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" (click)="register()" type="button">Regiser</button>
+    <br />
+    <br />
+    <br />
+</div>  

@@ -1,0 +1,30 @@
+{
+  "name": "Api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.15.3",
+    "jwt-simple": "^0.5.1",
+    "knex": "^0.13.0",
+    "moment": "^2.18.1",
+    "pg": "^6.2.4",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "socket.io": "^2.3.0",
+    "underscore": "^1.9.0"
+  },
+  "author": "tpt2213",
+  "license": "MIT"
+}

@@ -1,0 +1,30 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-success">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarToggler">
+    <a class="navbar-brand" href="#">XXxXX</a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li *ngIf="loggedIn" class="nav-item">
+      </li>
+    </ul>
+    <form *ngIf="!loggedIn" class="form-inline my-2 my-lg-0">
+      <button class="btn btn-warning" (click)="login()" type="button">Login</button>&nbsp;&nbsp;
+      <button class="btn btn-danger" (click)="register()" type="button">Register</button>
+    </form>
+    <form *ngIf="loggedIn" class="form-inline my-2 my-lg-0">
+      <button class="btn btn-toolbar" (click)="logout()" type="button">Logout</button>
+    </form>
+  </div>
+</nav>
+<div class="container">
+  <br />
+  <div *ngIf="!loggedIn" class="alert alert-info" role="alert">
+    <h4 class="alert-heading">Hi There!</h4>
+    <p>This is an app, it using stacks Node JS, Angular JS, Postgresql, Socket.IO, Map Google, Admin Page, Location Page.</p>
+    <hr>
+    <p class="mb-0">However, you should register for using. Thank you!</p>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>

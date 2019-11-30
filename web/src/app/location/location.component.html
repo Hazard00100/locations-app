@@ -1,0 +1,60 @@
+<div class="alert alert-info" role="alert">
+  Click on the map to get information about Hospital, School, Park, Supermarket with radius in 20km from your current point.
+</div>
+<agm-map zIndex="99999" [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="placeMarker($event)">
+  <agm-marker
+    iconUrl=""
+    label="L"
+    color="green"
+    [visible]="mkVisible"
+    [latitude]="lat"
+    [longitude]="lng"
+    (markerClick)="clickedMarker(A, 1)"
+    [markerDraggable]="mkDraggable"
+    (dragEnd)="markerDragEnd(m, $event)">
+
+    <agm-info-window isOpen="true">
+      <strong>
+        <span *ngIf="address">Address: {{address}}</span><br />
+        Your current position: ({{lat}}, {{lng}})
+      </strong>
+    </agm-info-window>
+  </agm-marker>
+
+  <!-- { id: 1, name: 'approve' }
+  data  { id: 2032,
+  name: 'Trường Mầm Non Quốc Tế Saigon Academy',
+  point: { x: 10.793041, y: 106.689889 },
+  address: 'Trần Nhật Duật, Tân Định',
+  userId: 2,
+  typeOfPlaceId: 2,
+  statusId: '1'
+
+  [markerDraggable]="m.draggable"
+  (dragEnd)="markerDragEnd(m, $event)"
+  }-->
+
+  <agm-marker
+    *ngFor="let m of listApprovedPlace; let i = index"
+    (markerClick)="clickedMarker(getPlaceLetter(m.typeOfPlaceId), i)"
+    [latitude]="m.point.x"
+    [longitude]="m.point.y"
+    [label]="getPlaceLetter(m.typeOfPlaceId)">
+    <agm-info-window>
+      <strong>
+        Address: {{m.address}}; Name: {{m.name}}<br />
+        Your current position: ({{m.point.x}}, {{m.point.y}})
+      </strong>
+    </agm-info-window>
+  </agm-marker>
+
+  <agm-circle
+    [visible]="mkVisible"
+    [latitude]="lat"
+    [longitude]="lng"
+    [radius]="radius"
+    [fillOpacity]="0.1"
+    [fillColor]="'#00A19A'"
+    [editable]="true">
+  </agm-circle>
+</agm-map>

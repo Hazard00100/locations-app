@@ -1,0 +1,22 @@
+<div class="row">
+  <div *ngFor="let item of arrLocations; let iL = index" class="col-3">
+
+    <div class="card border-info mb-4" style="max-width: 22rem;">
+      <div class="card-header">{{item.name}}</div>
+
+      <div class="card-body text-info">
+        <div class="card-text">
+          <span> Address: {{item.address}}.</span><br />
+          <span> Status: {{getPlaceStatus(item.statusId)}}.</span>
+        </div>
+
+        <select #selectElem (change)="changePlaceStatus(selectElem.value, item)">
+          <option *ngFor="let place of arrPlaceStatus" [value]="place.id" selected="{{compareStatus(place.id, item.statusId)}}">
+            {{place.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+</div>

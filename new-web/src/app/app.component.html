@@ -1,0 +1,49 @@
+<div class="container">
+  <br />
+  <div style="text-align: center;"><b><h3></h3></b></div>
+
+  <br />
+
+
+
+  <form *ngIf="!loggedIn" class="form-inline my-2 my-lg-0">
+    <button class="btn btn-warning" (click)="login()" type="button">Login</button>&nbsp;&nbsp;
+    <button class="btn btn-danger" (click)="register()" type="button">Register</button>
+  </form>
+  <form *ngIf="loggedIn">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Car to Go</a>
+      <button 
+        class="navbar-toggler" 
+        type="button"
+        data-toggle="collapse" 
+        data-target="#navbarSupportedContent" 
+        aria-controls="navbarSupportedContent" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation"
+        (click)="isNavbarCollapsed = !isNavbarCollapsed" 
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about-app">About App</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/help">Help</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/contact">Contact us</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <button class="btn btn-primary" (click)="logout()" type="button">Logout</button>
+        </form>
+      </div>
+    </nav>
+  </form>
+  <router-outlet></router-outlet>
+</div>
