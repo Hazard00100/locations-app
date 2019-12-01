@@ -75,7 +75,7 @@ export function jwtOptionsFactory(authService) {
     }),
     NgbModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAj5D2bg7UO-Qd8gXu0sex2JVPFj9oeQqg'
+      apiKey: Globals.GOOGLE_API_API_KEY
     }),
   ],
   providers: [
