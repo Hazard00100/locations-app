@@ -2,3 +2,5 @@
 node_modules
 globals.ts
 .env
+new-web/src/globals.ts
+api/.env
