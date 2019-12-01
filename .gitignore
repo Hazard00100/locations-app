@@ -1,2 +1,4 @@
 .idea
 node_modules
+new-web/globals.ts
+api/.env
