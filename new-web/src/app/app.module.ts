@@ -8,8 +8,10 @@ import { NgbModule, NgbModal, NgbActiveModal  } from '@ng-bootstrap/ng-bootstrap
 // import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';   // agm-direction
 
 import { Globals } from '../globals';
+import { GOOGLE_API_API_KEY } from '../gk'
 import { AppComponent } from './app.component';
 import { AuthorizationService } from './services/authorization.service';
 import SocketService from "./services/socket.service";
@@ -43,6 +45,8 @@ export function jwtOptionsFactory(authService) {
   }
 }
 
+console.log(' GOOGLE_API_API_KEY ', Globals)
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,8 +79,9 @@ export function jwtOptionsFactory(authService) {
     }),
     NgbModule,
     AgmCoreModule.forRoot({
-      apiKey: Globals.GOOGLE_API_API_KEY
+      apiKey: GOOGLE_API_API_KEY
     }),
+    AgmDirectionModule,     // agm-direction
   ],
   providers: [
     AuthorizationService,

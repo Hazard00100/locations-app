@@ -17,16 +17,28 @@ export class AdminService {
       .put(url, data))
       .subscribe(data => console.log(data), err => console.log(err));*/
 
-    return this.http.put(url, data)/*  .map(res => res.json()) */;
+    return this.http.put(url, data, {
+      headers: {
+        authorization: `Bearn ${this.authorizationService.getToken()}`
+      }
+    })/*  .map(res => res.json()) */;
   }
 
   getLocationData() {
     const url = this.globals.API_URL + 'data-lat-lng';
-    return this.http.get(url)/*  .map(res => res.json()) */;
+    return this.http.get(url, {
+      headers: {
+        authorization: `Bearn ${this.authorizationService.getToken()}`
+      }
+    })/*  .map(res => res.json()) */;
   }
 
   getPlaceStatus() {
     const url = this.globals.API_URL + 'list-status-of-place';
-    return this.http.get(url)/*  .map(res => res.json()) */;
+    return this.http.get(url, {
+      headers: {
+        authorization: `Bearn ${this.authorizationService.getToken()}`
+      }
+    })/*  .map(res => res.json()) */;
   }
 }

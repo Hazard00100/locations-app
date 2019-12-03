@@ -8,9 +8,12 @@ const { emitApprovePlace }      = require('../3rdParty/Socket/index');
 /*const { up, down } = require('../db/migrations/20170627190837_users');*/
 
 const map = new ggMap();
-const RADIUS = 20000;
+const RADIUS = 1000; //20000
 
 /** Api get data from lat, lng and type, radius **/
+/*
+* CREATE A TABLE
+* */
 router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
   const { lat, lng } = req.body;
   const userId = req.userData.id;
@@ -31,15 +34,18 @@ router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
     arrayCall = [];
 
     if (!placeType || placeType.length === 0) {
-      res.json({ success: false, tpt2213: 'ERROR', data: [] });
+      return res.json({ success: false, tpt2213: 'ERROR', data: [] });
     }
-
+    console.log(' handle-with-lat-lng ');
     placeType.map(async type => {
-      const data = await map.place().initD(lat, lng, RADIUS, type.name).searchNearBy();
+      const data = await map
+        .place()
+        .initD(lat, lng, RADIUS, type.name)
+        .searchNearBy();
       console.log('data.length ', data.length);
-      if (!data || data.length === 0) {
-        return resolve(0);
-      }
+      /*if (!data || data.length === 0) {
+        return null;
+      }*/
       return data.map(async ({
         name,
         geometry: {location},
@@ -57,6 +63,7 @@ router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
           userId
         };
           arrayCall.push(lItem);
+          await knex('locations').del();
           const rLItem = await knex('locations').insert(lItem).returning('*');
           console.log(' ============= insert this to db ============= ', rLItem);
         });
@@ -112,8 +119,9 @@ router.get('/data-lat-lng', isAuthenticated, async (req, res) => {
   try {
     if (!isAdmin) {
       data = await knex('locations').where({
-        statusId: dStatus.find(d => d.name === 'approve').id,
-        userId: req.userData.id
+        /*statusId: dStatus.find(d => d.name === 'approve').id,*/
+        userId: req.userData.id,
+        // userId:
       });
     } else {
       data = await knex.select().table('locations');

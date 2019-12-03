@@ -15,16 +15,29 @@ export class LocationService {
   sendCurrentLatLng(data: object) {
     console.log('sendCurrentLatLng  ==== ', data);
     const url = this.globals.API_URL + 'handle-with-lat-lng';
-    return this.http.put(url, data)/*.map(res => { return res.json() })*/;
+    return this.http.put(url, data, {
+      headers: {
+        authorization: `Bearn ${this.authorizationService.getToken()}`
+      }
+    })/*.map(res => { return res.json() })*/;
   }
 
   getMyLocationData() {
+    console.log(' authorizationService getToken  ' )
     const url = this.globals.API_URL + 'data-lat-lng';
-    return this.http.get(url)/*.map(res => { return res.json() })*/;
+    return this.http.get(url, {
+      headers: {
+        authorization: `Bearn ${this.authorizationService.getToken()}`
+      }
+    })/*.map(res => { return res.json() })*/;
   }
 
   getPlace() {
     const url = this.globals.API_URL + 'list-place';
-    return this.http.get(url)/*.map(res => res.json())*/;
+    return this.http.get(url, {
+      headers: {
+        authorization: `Bearn ${this.authorizationService.getToken()}`
+      }
+    })/*.map(res => res.json())*/;
   }
 }

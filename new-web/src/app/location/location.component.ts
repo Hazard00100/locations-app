@@ -21,18 +21,23 @@ declare var JSON: any;
 
 export class LocationComponent implements OnInit {
   geocoder: any;
-
-  lat: number = 10.801241; // lat HANG XANH
-  lng: number = 106.712710; // lng HANG XANH
-  zoom: number = 11.5;
-  radius: number = 20000; // 20km
+  lat: number = -2213; // lat HANG XANH
+  lng: number = -2213; // lng HANG XANH
+  zoom: number = 15;
+  radius: number = 1000; // 20km
   address: string;
 
   mkDraggable: boolean = true;
   mkVisible: boolean = false;
 
   listApprovedPlace: any = [];
+  currPlace: any = null;
   listPlace: any = [];
+  origin: any = null;
+  destination: any = null;
+  renderOptions = {
+    suppressMarkers: true,
+  }
 
   constructor(
     private locationService: LocationService,
@@ -49,7 +54,7 @@ export class LocationComponent implements OnInit {
         this.geocoder = new google.maps.Geocoder();
       });
       clearTimeout(timeOut);
-    }, 500);
+    }, 0);
 
     this.listApprovedPlace = [];
 
@@ -79,6 +84,13 @@ export class LocationComponent implements OnInit {
     this.lat = lat;
     this.lng = lng;
     this.mkVisible = true;
+    this.locationService
+      .sendCurrentLatLng({lat, lng})
+      .subscribe(
+        data => console.log(data),
+        err => console.log(err)
+      );
+    this.origin = {lat, lng};
   }
 
   getLatLng() {
@@ -101,21 +113,24 @@ export class LocationComponent implements OnInit {
     this.setLatlng($event.coords.lat, $event.coords.lng);
   }
 
-  clickedMarker(label: string, index: number) {
-    console.log(`clicked the marker: ${label || this.getPlaceLetter(index)}`);
+  clickedMarker(m: any) {
+    if (!this.currPlace) this.currPlace = m
+    else {
+      this.currPlace.isClicked = false;
+      this.currPlace = null
+      this.currPlace = m
+    }
+    console.log(`clicked the marker:`, m);
+    // this.listApprovedPlace = this.listApprovedPlace.map(d => ({...d, isClicked: false}))
+    m.isClicked = true
+    this.destination = { lat: m.point.x, lng:  m.point.y };
   }
+
 
   markerDragEnd(m, $event) {
     console.log('dragEnd', m, $event);
     this.setLatlng($event.coords.lat, $event.coords.lng);
     this.callGeocode();
-    this.locationService
-      .sendCurrentLatLng(this.getLatLng())
-      .subscribe(
-        data => console.log(data),
-        err => console.log(err)
-      );
-
     /** Ignore user click to much times **/
     this.mkDraggable = false;
     const tm = setTimeout(() => {
@@ -125,10 +140,14 @@ export class LocationComponent implements OnInit {
   }
 
   callGeocode() {
-    if (!this.geocoder && google) {
+    if (
+      !this.geocoder &&
+      typeof google === "object" &&
+      typeof this.geocoder.geocode === "object"
+    ) {
       this.geocoder = new google.maps.Geocoder();
+      this.geocoder.geocode({'location': this.getLatLng()}, (results, status) => this.getAddress(results, status));
     }
-    this.geocoder.geocode({'location': this.getLatLng()}, (results, status) => this.getAddress(results, status));
   }
 
   getAddress(results, status) {
@@ -143,6 +162,7 @@ export class LocationComponent implements OnInit {
   }
 
   getPlaceLetter(id) {
+    console.log('this.listPlace ', this.listPlace)
     return this.listPlace.find(p => p.id === id).name[0].toUpperCase();
   }
 }

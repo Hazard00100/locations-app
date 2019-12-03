@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     this.authorizationService.getUserLoggedIn()
       .subscribe(result => this.handleNavigate(result));
 
-    if (!this.loggedIn) this.router.navigate(['register']);
+    if (!this.loggedIn) this.router.navigate(['login']);
   }
 
   login() {
@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
   }
 
   register() {
-    this.router.navigate(['register']);
-    // this.modalService.open(RegisterComponent);
+    // this.router.navigate(['register']);
+    this.modalService.open(RegisterComponent);
   }
 
   logout() {

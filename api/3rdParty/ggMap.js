@@ -44,7 +44,7 @@ class ggMap {
 
         if (dt.status !== 'OK') {
           /** Re-calling **/
-          return await this.searchNearBy();
+          return [];//await this.searchNearBy();
         }
 
         if (dt.results) {

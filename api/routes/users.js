@@ -10,10 +10,10 @@ const {
 }                       = require('../3rdParty/auth/auth');
 
 router.post('/sign-up', async (req, res) => {
-  const { 
+  const {
     firstName,
     lastName,
-    username, 
+    username,
     password,
     dob,
     driverLincense,
@@ -21,10 +21,10 @@ router.post('/sign-up', async (req, res) => {
    console.log(
     firstName,
     lastName,
-    username, 
+    username,
     password,
     dob,
-    
+
    )
   if (!password || !username) {
     res.status(401).json(message.user[406]);
@@ -38,15 +38,15 @@ router.post('/sign-up', async (req, res) => {
       res.status(401).json(message.user[405]);
     }
     console.log('TRy insert to Db here ')
-    const user = await knex('users').insert({ 
-      firstname: firstName,
+    const user = await knex('users').insert({
+      /*firstname: firstName,
       lastname: lastName,
       dob: dob.toString(),
-      driverlincense: driverLincense,
-      username, 
+      driverlincense: driverLincense,*/
+      username,
       password: hash
      }).returning('*');
-     
+
     console.log(' done insert this user to DB ', user.id);
     delete user.password;
     delete user.driverlincense;

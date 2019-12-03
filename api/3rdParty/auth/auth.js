@@ -34,6 +34,7 @@ function decode(token, callback) {
 }
 
 function isAuthenticated(req, res, next) {
+  console.log(' req.headers ', req.headers);
   if (!(req.headers && req.headers.authorization)) {
     return res.status(401).json(message.user[401]);
   }
