@@ -1,7 +1,5 @@
 .idea
 node_modules
 .DS_Store
-new-web/src/globals.ts
-.env
-*/.env
-gk.ts
+#.env
+#gk.ts

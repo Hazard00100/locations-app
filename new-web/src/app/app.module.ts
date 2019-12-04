@@ -9,6 +9,8 @@ import { NgbModule, NgbModal, NgbActiveModal  } from '@ng-bootstrap/ng-bootstrap
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';   // agm-direction
+import { CountdownModule } from 'ngx-countdown';
+import { NgxTimerModule } from 'ngx-timer';
 
 import { Globals } from '../globals';
 import { GOOGLE_API_API_KEY } from '../gk'
@@ -21,6 +23,10 @@ import { AdminService } from './services/admin.service';
 
 import { LocationComponent } from './location/location.component';
 import { LocationService } from './services/location.service';
+
+import { NgbdModalShowPickPlaceInfo } from './location/ModalsShowPickPlaceInfo/showPickPlaceInfo.cmp';
+import { ModalWaitingGetCar } from './location/ModalWaitingGetCar/ModalWaitingGetCar.cmp';
+import { ModalStartCar } from './location/ModalStartCar/ModalStartCar.cmp';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -52,6 +58,9 @@ console.log(' GOOGLE_API_API_KEY ', Globals)
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    NgbdModalShowPickPlaceInfo,
+    ModalWaitingGetCar,
+    ModalStartCar,
 
     AdminComponent,
     LocationComponent,
@@ -63,6 +72,9 @@ console.log(' GOOGLE_API_API_KEY ', Globals)
   entryComponents: [
     LoginComponent,
     RegisterComponent,
+    NgbdModalShowPickPlaceInfo,
+    ModalWaitingGetCar,
+    ModalStartCar
   ],
   imports: [
     BrowserModule,
@@ -81,7 +93,9 @@ console.log(' GOOGLE_API_API_KEY ', Globals)
     AgmCoreModule.forRoot({
       apiKey: GOOGLE_API_API_KEY
     }),
-    AgmDirectionModule,     // agm-direction
+    AgmDirectionModule,     // agm-
+    CountdownModule,
+    NgxTimerModule,
   ],
   providers: [
     AuthorizationService,

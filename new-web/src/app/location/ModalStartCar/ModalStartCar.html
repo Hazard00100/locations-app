@@ -1,0 +1,14 @@
+<!-- Modal -->
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-title">Inside The Car</h4>
+  <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div>Time: <countup-timer [countUpTimerConfig]="data.countUpConfig"></countup-timer></div>
+  <div>Price: {{(555 * data.distance2Point) / 100}} OMR</div>
+</div>
+<div class="modal-footer text-center">
+  <button type="button" class="btn btn-danger" (click)="data.onClickEnd(modal)">End</button>
+</div>

@@ -1,12 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MapsAPILoader } from '@agm/core';
 import { LocationService } from '../services/location.service';
 import SocketService from "../services/socket.service";
+import { countUpTimerConfigModel, timerTexts, CountupTimerService } from 'ngx-timer';
+
+import { NgbdModalShowPickPlaceInfo } from './ModalsShowPickPlaceInfo/showPickPlaceInfo.cmp'
+import { ModalWaitingGetCar } from './ModalWaitingGetCar/ModalWaitingGetCar.cmp'
+import { ModalStartCar } from './ModalStartCar/ModalStartCar.cmp'
 
 declare var google: any;
 declare var clearTimeout: any;
 declare var JSON: any;
+const TIME_OPEN_POP_UP: number = 555
 
 @Component({
   selector: 'app-location',
@@ -14,12 +20,19 @@ declare var JSON: any;
   styles: [`
     agm-map {
       height: ${window.innerHeight - 150}px;
+    },
+    .modal {
+      position:fixed;
+      top:auto;
+      right:auto;
+      left:auto;
+      bottom:0;
     }
   `],
   styleUrls: []
 })
 
-export class LocationComponent implements OnInit {
+export class LocationComponent {
   geocoder: any;
   lat: number = -2213; // lat HANG XANH
   lng: number = -2213; // lng HANG XANH
@@ -29,31 +42,36 @@ export class LocationComponent implements OnInit {
 
   mkDraggable: boolean = true;
   mkVisible: boolean = false;
+  isShowAgmDirection: boolean = false;
 
   listApprovedPlace: any = [];
   currPlace: any = null;
   listPlace: any = [];
   origin: any = null;
   destination: any = null;
+  distance2Point: any = null;
+  countUpConfig: any = null;
   renderOptions = {
     suppressMarkers: true,
   }
 
   constructor(
     private locationService: LocationService,
-    private activeModal: NgbActiveModal,
+    private _countupTimerService: CountupTimerService,
+    private _modalService: NgbModal,
     private mapsAPILoader: MapsAPILoader,
     private t2Sk: SocketService,
   ) {}
 
   ngOnInit() {
-    navigator.geolocation.getCurrentPosition((p) => this.showPosition(p));
     const timeOut = setTimeout(() => {
       this.mapsAPILoader.load().then(() => {
         console.log('google script loaded');
         this.geocoder = new google.maps.Geocoder();
+        navigator.geolocation.getCurrentPosition((p) => this.showPosition(p));
+        this.callGeocode();
+        clearTimeout(timeOut);
       });
-      clearTimeout(timeOut);
     }, 0);
 
     this.listApprovedPlace = [];
@@ -103,7 +121,6 @@ export class LocationComponent implements OnInit {
   showPosition(position) {
     if (position && position.coords) {
       this.setLatlng(position.coords.latitude, position.coords.longitude);
-      this.callGeocode();
     }
   }
 
@@ -121,11 +138,12 @@ export class LocationComponent implements OnInit {
       this.currPlace = m
     }
     console.log(`clicked the marker:`, m);
+    console.log(`All the marker:`, this.listApprovedPlace);
     // this.listApprovedPlace = this.listApprovedPlace.map(d => ({...d, isClicked: false}))
     m.isClicked = true
     this.destination = { lat: m.point.x, lng:  m.point.y };
+    this.getDistance2Point()
   }
-
 
   markerDragEnd(m, $event) {
     console.log('dragEnd', m, $event);
@@ -140,20 +158,12 @@ export class LocationComponent implements OnInit {
   }
 
   callGeocode() {
-    if (
-      !this.geocoder &&
-      typeof google === "object" &&
-      typeof this.geocoder.geocode === "object"
-    ) {
-      this.geocoder = new google.maps.Geocoder();
-      this.geocoder.geocode({'location': this.getLatLng()}, (results, status) => this.getAddress(results, status));
-    }
+    this.geocoder.geocode({'location': this.getLatLng()}, (results, status) => this.getAddress(results, status));
   }
 
   getAddress(results, status) {
     if (status === 'OK') {
       if (results) {
-        console.log('getAddress   ', results);
         this.address = results[0].formatted_address
       }
     } else {
@@ -164,5 +174,82 @@ export class LocationComponent implements OnInit {
   getPlaceLetter(id) {
     console.log('this.listPlace ', this.listPlace)
     return this.listPlace.find(p => p.id === id).name[0].toUpperCase();
+  }
+
+  getDistance2Point() {
+    const org = new google.maps.LatLng(this.origin.lat, this.origin.lng);
+    const dest = new google.maps.LatLng(this.destination.lat, this.destination.lng);
+    this.distance2Point = google.maps.geometry.spherical.computeDistanceBetween(org, dest);
+    console.log('getDistance2Point ', this.distance2Point);
+    this.openModalShowPickPlace()
+  }
+
+  openModalShowPickPlace() {
+    const timeOut = setTimeout(() => {
+      this._modalService.open(NgbdModalShowPickPlaceInfo)
+        .componentInstance
+        .data = {
+        ...this.currPlace,
+        distance2Point: this.distance2Point / 1000,
+        onClickOk: (m) => {
+          this.isShowAgmDirection = true
+
+          /* waiting pickup car */
+          this.openModalShowWaitingPlace()
+          m.close('Ok click')
+        }
+      };
+      clearTimeout(timeOut)
+    }, TIME_OPEN_POP_UP)
+  }
+
+  openModalShowWaitingPlace() {
+    const timeOut = setTimeout(() => {
+      const md = this._modalService.open(ModalWaitingGetCar);
+      md.componentInstance
+        .data = {
+          ...this.currPlace,
+          distance2Point: this.distance2Point / 1000,
+          onClickOk: (m) => {
+            /*** Hanlde here  ***/
+            this.openModalStartCar()
+            m.close('Ok click')
+          },
+          onClickCancel: (m) => {
+            this.isShowAgmDirection = false
+            m.close('Cancel click')
+          },
+          handleTMEvent(e: any) {
+            console.log('handleEvent ', e)
+            if (e.action === 'done') {
+              this.isShowAgmDirection = false
+              md.close('Cancel click')
+            }
+          }
+      };
+      clearTimeout(timeOut)
+    }, TIME_OPEN_POP_UP)
+  }
+
+  openModalStartCar() {
+    this.countUpConfig = new countUpTimerConfigModel();
+    const timeOut = setTimeout(() => {
+      const md = this._modalService.open(ModalStartCar);
+      md.componentInstance
+        .data = {
+        countUpConfig: this.countUpConfig,
+        ...this.currPlace,
+        distance2Point: this.distance2Point / 1000,
+        onClickEnd: (m) => {
+          this.isShowAgmDirection = false
+          m.close('Ok click')
+        },
+        handleTMEvent(e: any) {
+          console.log('openModalStartCar', e)
+        }
+      };
+      clearTimeout(timeOut)
+    }, TIME_OPEN_POP_UP);
+    this._countupTimerService.startTimer();
   }
 }

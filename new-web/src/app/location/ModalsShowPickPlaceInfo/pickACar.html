@@ -1,0 +1,21 @@
+<!-- Modal -->
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-title">Tesla Cybertruck</h4>
+  <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div>
+    <div>Plate No: {{data.id}}</div>
+    <div>Destination: {{data.address}} - Name: {{data.name}}</div>
+    <div>Distance: {{data.distance2Point}} km</div>
+  </div>
+  <div><img src="./assets/images/card-nice.jpeg" alt="" /></div>
+  <div>555 Oman Baisa / km</div>
+  <div>ToTal: {{(555 * data.distance2Point) / 100}} OMR</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+  <button type="button" class="btn btn-danger" (click)="data.onClickOk(modal)">Ok</button>
+</div>

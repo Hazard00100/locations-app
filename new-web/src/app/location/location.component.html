@@ -1,6 +1,13 @@
 <!---<div class="alert alert-info" role="alert">
   Click on the map to get information about Hospital, School, Park, Supermarket with radius in 20km from your current point.
 </div>--->
+<div *ngIf="lat === -2213">
+  <br />
+  <br />
+  <h4>The Map Loading...</h4>
+  <br />
+</div>
+
 <div *ngIf="lat !== -2213">
   <agm-map zIndex="99999" [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="placeMarker($event)">
     <agm-marker
@@ -12,8 +19,8 @@
       [longitude]="lng"
       (markerClick)="clickedMarker(A, 1)"
       [markerDraggable]="mkDraggable"
-      (dragEnd)="markerDragEnd(m, $event)">
-
+      (dragEnd)="markerDragEnd(m, $event)"
+    >
       <agm-info-window isOpen="true">
         <strong>
           <span *ngIf="address">Address: {{address}}</span><br />
@@ -48,13 +55,12 @@
         }
       }"
     >
-      <agm-info-window [disableAutoPan]="false">
+      <agm-info-window [isOpen]="currPlace && currPlace.name && currPlace.id === m.id" [disableAutoPan]="false">
         <strong>
           Address: {{m.address}}; Name: {{m.name}}<br />
           Your current position: ({{m.point.x}}, {{m.point.y}})
         </strong>
       </agm-info-window>
-
     </agm-marker>
    </div>
 
@@ -67,7 +73,7 @@
       [fillColor]="'#00A19A'"
       [editable]="true">
     </agm-circle>
-    <div *ngIf="origin !== null && destination !== null">
+    <div *ngIf="isShowAgmDirection===true">
       <agm-direction
         [origin]="origin"
         [destination]="destination"
@@ -76,8 +82,5 @@
     </div>
   </agm-map>
 </div>
-<div class="fixed-bottom">
-  <div>
 
-  </div>
-</div>
+<!--origin !== null && destination !== null-->

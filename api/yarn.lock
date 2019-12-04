@@ -1907,6 +1907,13 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
+ngx-timer@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/ngx-timer/-/ngx-timer-1.0.6.tgz#e24e6c2fa79d7159aa6b5513fc5d5307195adbb1"
+  integrity sha512-K1D1F1hAgiB/HUIy5lGvcee57DGFkNHWn/tQoxtW3jGt2fPPy9B5hgFK6pVPi2k6DLYS898OFQlaSMMW4u9DUQ==
+  dependencies:
+    tslib "^1.9.0"
+
 node-pre-gyp@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.12.0.tgz#39ba4bb1439da030295f899e3b520b7785766149"
@@ -2938,6 +2945,11 @@ tough-cookie@~2.4.3:
   dependencies:
     psl "^1.1.24"
     punycode "^1.4.1"
+
+tslib@^1.9.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
 tunnel-agent@^0.6.0:
   version "0.6.0"

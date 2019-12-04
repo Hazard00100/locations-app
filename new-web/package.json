@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build --prod",
-    "start": "ng serve --host=localhost --port 1111",
+    "start": "ng serve --host=localhost --port 4567",
     "test": "ng test",
     "lint": "tslint ./src/**/*.ts -t verbose",
     "e2e": "ng e2e"
@@ -31,6 +31,8 @@
     "angular-in-memory-web-api": "^0.9.0",
     "bootstrap": "4.3.1",
     "core-js": "^2.5.4",
+    "ngx-countdown": "^8.0.3",
+    "ngx-timer": "^1.0.6",
     "rxjs": "^6.5.1",
     "rxjs-compat": "^6.5.3",
     "socket.io-client": "^2.3.0",
