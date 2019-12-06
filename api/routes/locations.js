@@ -8,7 +8,7 @@ const { emitApprovePlace }      = require('../3rdParty/Socket/index');
 /*const { up, down } = require('../db/migrations/20170627190837_users');*/
 
 const map = new ggMap();
-const RADIUS = 1000; //20000
+const RADIUS = 20000; //20000
 
 /** Api get data from lat, lng and type, radius **/
 /*
@@ -30,44 +30,53 @@ router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
   try {
     const
     placeType = await knex.select().table('typeOfPlace'),
-    dStatus = await knex.select().table('status'),
-    arrayCall = [];
+    dStatus = await knex.select().table('status');
+    let arrayCall = [];
 
     if (!placeType || placeType.length === 0) {
       return res.json({ success: false, tpt2213: 'ERROR', data: [] });
     }
-    console.log(' handle-with-lat-lng ');
-    placeType.map(async type => {
-      const data = await map
-        .place()
-        .initD(lat, lng, RADIUS, type.name)
-        .searchNearBy();
-      console.log('data.length ', data.length);
-      /*if (!data || data.length === 0) {
-        return null;
-      }*/
-      return data.map(async ({
-        name,
-        geometry: {location},
-        vicinity,
-        icon,
-        id,
-        place_id
-      }) => {
-        const lItem = {
+
+    const listUserPlaces = await knex('locations').where({ userId, });
+
+    console.log(' handle-with-lat-lng ', listUserPlaces);
+    if (listUserPlaces && listUserPlaces.length > 0) {
+      console.log(' listUserPlaces && listUserPlaces.length ', listUserPlaces);
+      arrayCall = listUserPlaces;
+    } else {
+      placeType.map(async type => {
+        const data = await map
+          .place()
+          .initD(lat, lng, RADIUS, type.name)
+          .searchNearBy();
+        console.log('data.length ', data.length);
+        if (!data || data.length === 0) {
+          return null;
+        }
+        return data.map(async ({
           name,
-          point: knex.raw(`POINT (${location.lat}, ${location.lng})`),
-          address: vicinity,
-          typeOfPlaceId: type.id,
-          statusId: (dStatus.find(d => d.name === 'pending') || {id: 3}).id,
-          userId
-        };
+          geometry: {location},
+          vicinity,
+          icon,
+          id,
+          place_id
+        }) => {
+          const lItem = {
+            name,
+            point: knex.raw(`POINT (${location.lat}, ${location.lng})`),
+            address: vicinity,
+            typeOfPlaceId: type.id,
+            statusId: (dStatus.find(d => d.name === 'pending') || {id: 3}).id,
+            userId
+          };
+          
           arrayCall.push(lItem);
-          await knex('locations').del();
+          // await knex('locations').del();
           const rLItem = await knex('locations').insert(lItem).returning('*');
           console.log(' ============= insert this to db ============= ', rLItem);
         });
-    });
+      });
+    }
     res.json({ success: true, tpt2213: 'OK', data: arrayCall });
   } catch (err) {
     console.log('err', err);

@@ -7,15 +7,20 @@
 </div>
 <div class="modal-body">
   <div>
-    <div>Plate No: {{data.id}}</div>
-    <div>Destination: {{data.address}} - Name: {{data.name}}</div>
-    <div>Distance: {{data.distance2Point}} km</div>
+    <div>Plate No: 233 A</div>
+    <div>Location: {{data.address}} - Name: {{data.name}}</div>
+    <div>Distance: 1 km Away</div>
   </div>
+  <br>
   <div><img src="./assets/images/card-nice.jpeg" alt="" /></div>
-  <div>555 Oman Baisa / km</div>
-  <div>ToTal: {{(555 * data.distance2Point) / 100}} OMR</div>
+  <br>
+
+  <div>100 Oman Baisa / 1 km</div>
+  <!---<div>ToTal: {{(555 * data.distance2Point) / 100}} OMR</div>--->
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
   <button type="button" class="btn btn-danger" (click)="data.onClickOk(modal)">Ok</button>
 </div>
+
+ <!--{{data.distance2Point}}-->

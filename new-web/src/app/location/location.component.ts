@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MapsAPILoader } from '@agm/core';
 import { LocationService } from '../services/location.service';
 import SocketService from "../services/socket.service";
-import { countUpTimerConfigModel, timerTexts, CountupTimerService } from 'ngx-timer';
+import { countUpTimerConfigModel, CountupTimerService } from 'ngx-timer';
 
 import { NgbdModalShowPickPlaceInfo } from './ModalsShowPickPlaceInfo/showPickPlaceInfo.cmp'
 import { ModalWaitingGetCar } from './ModalWaitingGetCar/ModalWaitingGetCar.cmp'
@@ -12,7 +12,7 @@ import { ModalStartCar } from './ModalStartCar/ModalStartCar.cmp'
 declare var google: any;
 declare var clearTimeout: any;
 declare var JSON: any;
-const TIME_OPEN_POP_UP: number = 555
+const TIME_OPEN_POP_UP: number = 1000
 
 @Component({
   selector: 'app-location',
@@ -51,9 +51,10 @@ export class LocationComponent {
   destination: any = null;
   distance2Point: any = null;
   countUpConfig: any = null;
+  travelMode: string = 'WALKING';
   renderOptions = {
-    suppressMarkers: true,
-  }
+    suppressMarkers: true
+  };
 
   constructor(
     private locationService: LocationService,
@@ -143,6 +144,7 @@ export class LocationComponent {
     m.isClicked = true
     this.destination = { lat: m.point.x, lng:  m.point.y };
     this.getDistance2Point()
+    this.isShowAgmDirection = true
   }
 
   markerDragEnd(m, $event) {
@@ -179,7 +181,7 @@ export class LocationComponent {
   getDistance2Point() {
     const org = new google.maps.LatLng(this.origin.lat, this.origin.lng);
     const dest = new google.maps.LatLng(this.destination.lat, this.destination.lng);
-    this.distance2Point = google.maps.geometry.spherical.computeDistanceBetween(org, dest);
+    this.distance2Point = google.maps.geometry.spherical.computeDistanceBetween(org, dest) / 1000; // km
     console.log('getDistance2Point ', this.distance2Point);
     this.openModalShowPickPlace()
   }
@@ -190,7 +192,7 @@ export class LocationComponent {
         .componentInstance
         .data = {
         ...this.currPlace,
-        distance2Point: this.distance2Point / 1000,
+        distance2Point: this.distance2Point,
         onClickOk: (m) => {
           this.isShowAgmDirection = true
 
@@ -209,7 +211,7 @@ export class LocationComponent {
       md.componentInstance
         .data = {
           ...this.currPlace,
-          distance2Point: this.distance2Point / 1000,
+          distance2Point: this.distance2Point,
           onClickOk: (m) => {
             /*** Hanlde here  ***/
             this.openModalStartCar()
@@ -239,7 +241,7 @@ export class LocationComponent {
         .data = {
         countUpConfig: this.countUpConfig,
         ...this.currPlace,
-        distance2Point: this.distance2Point / 1000,
+        distance2Point: this.distance2Point,
         onClickEnd: (m) => {
           this.isShowAgmDirection = false
           m.close('Ok click')
@@ -250,6 +252,7 @@ export class LocationComponent {
       };
       clearTimeout(timeOut)
     }, TIME_OPEN_POP_UP);
+    this._countupTimerService.stopTimer();
     this._countupTimerService.startTimer();
   }
 }

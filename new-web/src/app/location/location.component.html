@@ -4,7 +4,7 @@
 <div *ngIf="lat === -2213">
   <br />
   <br />
-  <h4>The Map Loading...</h4>
+  <h4>The Map is Loading...</h4>
   <br />
 </div>
 
@@ -19,8 +19,8 @@
       [longitude]="lng"
       (markerClick)="clickedMarker(A, 1)"
       [markerDraggable]="mkDraggable"
-      (dragEnd)="markerDragEnd(m, $event)"
-    >
+      (dragEnd)="markerDragEnd(m, $event)">
+      
       <agm-info-window isOpen="true">
         <strong>
           <span *ngIf="address">Address: {{address}}</span><br />
@@ -41,6 +41,8 @@
     [markerDraggable]="m.draggable"
     (dragEnd)="markerDragEnd(m, $event)"
     }-->
+
+    
    <div *ngIf="listApprovedPlace.length > 0">
     <agm-marker
       *ngFor="let m of listApprovedPlace; let i = index"
@@ -77,6 +79,7 @@
       <agm-direction
         [origin]="origin"
         [destination]="destination"
+        [travelMode]="travelMode"
         [renderOptions]="renderOptions"
       ></agm-direction>
     </div>
