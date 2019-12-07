@@ -7,15 +7,16 @@ const { isAuthenticated }       = require('../3rdParty/auth/auth');
 const { emitApprovePlace }      = require('../3rdParty/Socket/index');
 /*const { up, down } = require('../db/migrations/20170627190837_users');*/
 
-const map = new ggMap();
-const RADIUS = 20000; //20000
+const RADIUS = 10000; //20000
 
 /** Api get data from lat, lng and type, radius **/
 /*
 * CREATE A TABLE
 * */
 router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
+  const map = new ggMap();
   const { lat, lng } = req.body;
+  console.log('userData ', req.userData)
   const userId = req.userData.id;
   console.log(' lat, lng ',lat, lng, userId);
 
@@ -26,7 +27,6 @@ router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
   if (!userId) {
     res.status(401).json(message.user[401]);
   }
-
   try {
     const
     placeType = await knex.select().table('typeOfPlace'),
@@ -41,43 +41,52 @@ router.put('/handle-with-lat-lng', isAuthenticated, async (req, res) => {
 
     console.log(' handle-with-lat-lng ', listUserPlaces);
     if (listUserPlaces && listUserPlaces.length > 0) {
-      console.log(' listUserPlaces && listUserPlaces.length ', listUserPlaces);
-      arrayCall = listUserPlaces;
+      console.log(' listUserPlaces && listUserPlaces.length ', listUserPlaces.length);
+      res.json({ success: true, tpt2213: 'OK', data: listUserPlaces });
     } else {
-      placeType.map(async type => {
+      let plCnt = 0;
+      while (plCnt < placeType.length) {
+        if (plCnt === placeType.length) break;
         const data = await map
           .place()
-          .initD(lat, lng, RADIUS, type.name)
+          .reset()
+          .initD(lat, lng, RADIUS, placeType[plCnt].name)
           .searchNearBy();
         console.log('data.length ', data.length);
-        if (!data || data.length === 0) {
-          return null;
+        if (data && data.length > 0) {
+          let dtCnt = 0;
+          while (dtCnt < data.length) {
+            if (dtCnt === data.length) break;
+            const {
+              name,
+              geometry: {location},
+              vicinity,
+              icon,
+              id,
+              place_id
+            } = data[dtCnt]
+            const lItem = {
+              name,
+              point: knex.raw(`POINT (${location.lat}, ${location.lng})`),
+              address: vicinity,
+              typeOfPlaceId: placeType[plCnt].id,
+              statusId: (dStatus.find(d => d.name === 'pending') || {id: 3}).id,
+              userId
+            };
+
+            arrayCall = [...arrayCall, {...lItem}];
+            // await knex('locations').del();
+            const rLItem = await knex('locations').insert(lItem).returning('*');;
+            console.log(' ADD to DB rLItem  ', rLItem);
+            dtCnt ++;
+          }
         }
-        return data.map(async ({
-          name,
-          geometry: {location},
-          vicinity,
-          icon,
-          id,
-          place_id
-        }) => {
-          const lItem = {
-            name,
-            point: knex.raw(`POINT (${location.lat}, ${location.lng})`),
-            address: vicinity,
-            typeOfPlaceId: type.id,
-            statusId: (dStatus.find(d => d.name === 'pending') || {id: 3}).id,
-            userId
-          };
-          
-          arrayCall.push(lItem);
-          // await knex('locations').del();
-          const rLItem = await knex('locations').insert(lItem).returning('*');
-          console.log(' ============= insert this to db ============= ', rLItem);
-        });
-      });
+        plCnt ++;
+      }
+      console.log(' ============= insert this to db ============= ', arrayCall.length)
+      const lu = await knex('locations').where({ userId });
+      return res.send({ success: true, tpt2213: 'OK', data: lu });
     }
-    res.json({ success: true, tpt2213: 'OK', data: arrayCall });
   } catch (err) {
     console.log('err', err);
     res.status(500).json(message.general[500]);

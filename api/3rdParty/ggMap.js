@@ -11,6 +11,7 @@ class ggMap {
       reset() {
         this.result = [];
         this.count = 0;
+        return this;
       },
       initD(lat, lng, radius, type) {
         this.lat = lat;
@@ -61,7 +62,7 @@ class ggMap {
             console.log('break done get data !!!! ', this.type);
             console.log('============================= DONE ===========================================');
             const data = this.result;
-            this.reset();
+            // this.reset();
             return data;
           }
           return await this.searchNearBy();

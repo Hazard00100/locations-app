@@ -106,7 +106,19 @@ export class LocationComponent {
     this.locationService
       .sendCurrentLatLng({lat, lng})
       .subscribe(
-        data => console.log(data),
+        (r: {data: any;}) => {
+          console.log(r)
+          if (r && r.data && r.data.length > 0) this.listApprovedPlace = r.data;
+          else setTimeout(() => {
+            this.locationService.getMyLocationData()
+              .subscribe(
+                (rr: {data: any;}) => {
+                  this.listApprovedPlace = rr.data;
+                },
+                e => console.log(e)
+              );
+          }, 7777);
+        },
         err => console.log(err)
       );
     this.origin = {lat, lng};
