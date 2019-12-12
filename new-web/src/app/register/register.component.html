@@ -1,4 +1,3 @@
-
 <div class="modal-header">
   <h4 class="modal-title">Creat new account</h4>
 </div>
@@ -7,17 +6,20 @@
     {{errorMessage}}
   </div>
   <form>
-      <div class="form-group">
-          <label for="firstName">First Name:</label>
-          <input required type="text" [(ngModel)]="user.firstName" class="form-control" id="firstName" name="firstName" placeholder="First Name" />
-        </div>
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input required type="text" [(ngModel)]="user.firstName" class="form-control" id="firstName" name="firstName"
+        placeholder="First Name" />
+    </div>
     <div class="form-group">
       <label for="lastName">Last Name:</label>
-      <input required type="text" [(ngModel)]="user.lastName" class="form-control" id="lastName" name="lastName" placeholder="Last Name" />
+      <input required type="text" [(ngModel)]="user.lastName" class="form-control" id="lastName" name="lastName"
+        placeholder="Last Name" />
     </div>
     <div class="form-group">
       <label for="username">Username:</label>
-      <input required type="text" [(ngModel)]="user.username" class="form-control" id="username" name="username" placeholder="Username" />
+      <input required type="text" [(ngModel)]="user.username" class="form-control" id="username" name="username"
+        placeholder="Username" />
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -31,20 +33,63 @@
     </div>
     <div class="form-group">
       <label for="dob">Date of Birth:</label>
-      <input type="date" class="form-control"
-         placeholder="Date of Birth"/>
+      <input type="date" class="form-control" placeholder="Date of Birth" />
     </div>
     <div class="custom-file">
       <label class="custom-file-label" for="customFileLang">Driver's License</label>
-      <input type="file" accept=".png, .jpg, .jpeg" (change)="onUploadChange($event)" class="custom-file-input" id="customFileLang" lang="pl-Pl">
+      <input type="file" accept=".png, .jpg, .jpeg" (change)="onUploadChange($event)" class="custom-file-input"
+        id="customFileLang" lang="pl-Pl">
       <img width="300" height="150" src={{user.driverLincense}} alt="" id="img">
     </div>
+  </form>
+  <br><br>
 
+  <div class="modal-header">
+    <h4 class="modal-title">Payment Details</h4>
+    <br><br>
+    <img class="img-responsive cc-img" src="http://www.prepbootstrap.com/Content/images/shared/misc/creditcardicons.png"
+      width="160" height="35">
+  </div>
+  <br>
+  <form>
+    <div class="form-group">
+      <label for="cardno">Card Number:</label>
+      <input required type="text" [(ngModel)]="user.cardno" class="form-control" id="cardno" name="cardno"
+        placeholder="Valid Card Number" />
+    </div>
+    <div class="row">
+  <div class="col-xs-5 col-md-5">
+  <div class="form-group">
+  <label for="cardexpiry"><span class="hidden-xs">Expiration:</span><span class="visible-xs-inline"></span></label>
+  <input type="tel" class="form-control"name="cardExpiry" placeholder="MM / YY" autocomplete="cc-exp"required />
+  
+  </div>
+  </div>
+</div>
+
+      <div class="form-group">
+        <label for="CHN">Card Holder Name:</label>
+        <input required type="text" [(ngModel)]="user.CHN" class="form-control" id="CHN" name="CHN"
+          placeholder="Card Holder Name" />
+      </div>
+
+      <!---<div class="form-group">
+    <label for="cvv">CV Code:</label>
+    <input id="cvv" type="text" class="form-control" placeholder="cvv" aria-label="cvv" aria-describedby="basic-addon1">
+</div>--->
+      <div class="row">
+        <div class="col-xs-3 col-md-3">
+          <div class="form-group">
+            <label for="cvv"><span class="hidden-xs">CV Code:</span><span class="visible-xs-inline"></span></label>
+            <input type="tel" class="form-control" name="cvv" placeholder="CVV" autocomplete="cc-exp" required />
+          </div>
+        </div>
+      </div>
   </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" (click)="register()" type="button">Regiser</button>
-    <br />
-    <br />
-    <br />
+  <button class="btn btn-primary" (click)="register()" type="button">Regiser</button>
+  <br />
+  <br />
+  <br />
 </div>
