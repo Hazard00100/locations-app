@@ -20,7 +20,7 @@
       (markerClick)="clickedMarker(A, 1)"
       [markerDraggable]="mkDraggable"
       (dragEnd)="markerDragEnd(m, $event)">
-      
+
       <agm-info-window isOpen="true">
         <strong>
           <span *ngIf="address">Address: {{address}}</span><br />
@@ -42,7 +42,7 @@
     (dragEnd)="markerDragEnd(m, $event)"
     }-->
 
-    
+
    <div *ngIf="listApprovedPlace.length > 0">
     <agm-marker
       *ngFor="let m of listApprovedPlace; let i = index"
