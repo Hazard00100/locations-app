@@ -61,15 +61,14 @@
   <div class="col-xs-5 col-md-5">
   <div class="form-group">
   <label for="cardexpiry"><span class="hidden-xs">Expiration:</span><span class="visible-xs-inline"></span></label>
-  <input type="tel" class="form-control"name="cardExpiry" placeholder="MM / YY" autocomplete="cc-exp"required />
-  
+  <input type="tel" [(ngModel)]="user.expiration" class="form-control"name="cardExpiry" placeholder="MM / YY" autocomplete="cc-exp"required />
   </div>
   </div>
 </div>
 
       <div class="form-group">
         <label for="CHN">Card Holder Name:</label>
-        <input required type="text" [(ngModel)]="user.CHN" class="form-control" id="CHN" name="CHN"
+        <input required type="text" [(ngModel)]="user.cardholdername" class="form-control" id="CHN" name="CHN"
           placeholder="Card Holder Name" />
       </div>
 
@@ -81,7 +80,7 @@
         <div class="col-xs-3 col-md-3">
           <div class="form-group">
             <label for="cvv"><span class="hidden-xs">CV Code:</span><span class="visible-xs-inline"></span></label>
-            <input type="tel" class="form-control" name="cvv" placeholder="CVV" autocomplete="cc-exp" required />
+            <input type="tel" [(ngModel)]="user.cvv" class="form-control" name="cvv" placeholder="CVV" autocomplete="cc-exp" required />
           </div>
         </div>
       </div>

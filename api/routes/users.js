@@ -17,6 +17,10 @@ router.post('/sign-up', async (req, res) => {
     password,
     dob,
     driverLincense,
+    cardholdername,
+    cardno,
+    cvv,
+    expiration,
    } = req.body;
    console.log(
     firstName,
@@ -24,7 +28,7 @@ router.post('/sign-up', async (req, res) => {
     username,
     password,
     dob,
-
+    cardno
    )
   if (!password || !username) {
     res.status(401).json(message.user[406]);
@@ -39,10 +43,14 @@ router.post('/sign-up', async (req, res) => {
     }
     console.log('TRy insert to Db here ')
     const user = await knex('users').insert({
-      /*firstname: firstName,
+      firstname: firstName,
       lastname: lastName,
       dob: dob.toString(),
-      driverlincense: driverLincense,*/
+      cardholdername,
+      cardno,
+      cvv,
+      expiration,
+      driverlincense: driverLincense,
       username,
       password: hash
      }).returning('*');

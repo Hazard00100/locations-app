@@ -25,7 +25,9 @@ export class RegisterComponent implements OnInit {
       Object.keys(this.user).length < 7
     ) {
       this.errorMessage = 'This field is required';
-    } else 
+    } else {
+      console.log(this.user)
+      // return false
       this.authorizationService.register(this.user).subscribe(
         (data: any) => {
           if (data.success) {
@@ -38,6 +40,7 @@ export class RegisterComponent implements OnInit {
           }
         },
         err => this.displayErrorMessage(err));
+    }
   }
 
   displayErrorMessage(msg) {

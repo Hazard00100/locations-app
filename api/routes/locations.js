@@ -7,7 +7,7 @@ const { isAuthenticated }       = require('../3rdParty/auth/auth');
 const { emitApprovePlace }      = require('../3rdParty/Socket/index');
 /*const { up, down } = require('../db/migrations/20170627190837_users');*/
 
-const RADIUS = 10000; //20000
+const RADIUS = 5000; //20000
 
 /** Api get data from lat, lng and type, radius **/
 /*
