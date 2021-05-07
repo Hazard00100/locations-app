@@ -23,7 +23,7 @@
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "socket.io": "^2.3.0",
-    "underscore": "^1.9.0"
+    "underscore": "^1.12.1"
   },
   "author": "tpt2213",
   "license": "MIT"
