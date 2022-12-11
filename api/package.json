@@ -15,7 +15,7 @@
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "dotenv": "^5.0.1",
-    "express": "^4.15.3",
+    "express": "^4.17.3",
     "jwt-simple": "^0.5.1",
     "knex": "^0.13.0",
     "moment": "^2.18.1",
